@@ -67,5 +67,51 @@ contract KryptopyToken is MintableToken, PausableToken {
     Transfer(owner, _to, _amount);
     return true;
   }
-  
+
+  /**
+  * @dev override BasicToken transfer to check if sender contains enough to transfer
+  * @param _to The address to transfer to.
+  * @param _value The amount to be transferred.
+  */
+  function transfer(address _to, uint256 _value) returns (bool) {
+    if (balances[msg.sender] >= _value
+        && _value > 0
+        && balances[_to] + _value > balances[_to]
+        ) {
+      balances[msg.sender] = balances[msg.sender].sub(_value);
+      balances[_to] = balances[_to].add(_value);
+      Transfer(msg.sender, _to, _value);
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  /**
+   * @dev override StandardToken Transfer tokens from one address to another
+   * @param _from address The address which you want to send tokens from
+   * @param _to address The address which you want to transfer to
+   * @param _value uint256 the amout of tokens to be transfered
+   */
+  function transferFrom(address _from, address _to, uint256 _value) returns (bool) {
+    uint _allowance = allowed[_from][msg.sender];
+
+    if (balances[_from] >= _value   // From a/c has balance
+        && _allowance >= _value    // Transfer approved
+        && _value > 0              // Non-zero transfer
+        && balances[_to] + _value > balances[_to]  // Overflow check
+        ){
+
+      allowed[_from][msg.sender] = _allowance.sub(_value);
+      balances[_from] = balances[_from].sub(_value);
+      balances[_to] = balances[_to].add(_value);
+
+      Transfer(_from, _to, _value);
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
 }
