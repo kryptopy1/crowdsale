@@ -11,14 +11,12 @@ contract('KryptopyToken: StandardToken', function(accounts) {
   });
 
   it('should return the correct totalSupply after construction', async function() {
-    let instance = await Token.new();
     let totalSupply = await instance.totalSupply();
 
     assert.equal(totalSupply, 50000000000000000);
   });
 
   it('should return the correct allowance amount after approval', async function() {
-    let instance = await Token.new();
     await instance.approve(accounts[1], 100);
     let allowance = await instance.allowance(accounts[0], accounts[1]);
 
@@ -26,14 +24,12 @@ contract('KryptopyToken: StandardToken', function(accounts) {
   });
 
   it("should start off paused", async function() {
-    let instance = await Token.new();
     let paused = await instance.paused();
 
     assert.equal(paused, true);
   });
 
   it("should be unpaused by owner", async function() {
-    let instance = await Token.new();
     await instance.unpause();
 
     let paused = await instance.paused()
@@ -41,7 +37,6 @@ contract('KryptopyToken: StandardToken', function(accounts) {
   });
 
   it('should return correct balances after transfer', async function() {
-    let instance = await Token.new();
     await instance.unpause();
 
     await instance.transfer(accounts[1], 100);
@@ -53,7 +48,6 @@ contract('KryptopyToken: StandardToken', function(accounts) {
   });
 
   it('should return false when trying to transfer more than balance', async function() {
-    let instance = await Token.new();
     await instance.unpause();
 
     let status = await instance.transfer.call(accounts[1], 50000000000000100);
@@ -61,7 +55,6 @@ contract('KryptopyToken: StandardToken', function(accounts) {
   });
 
   it('should return correct balances after transfering from another account', async function() {
-    let instance = await Token.new();
     await instance.unpause();
     await instance.approve(accounts[1], 100);
     await instance.transferFrom(accounts[0], accounts[2], 100, { from: accounts[1] });
@@ -77,7 +70,6 @@ contract('KryptopyToken: StandardToken', function(accounts) {
   });
 
   it('should return false when trying to transfer more than allowed', async function() {
-    let instance = await Token.new();
     await instance.unpause();
     await instance.approve(accounts[1], 99);
 
