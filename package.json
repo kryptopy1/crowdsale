@@ -1,0 +1,16 @@
+{
+  "name": "kryptopy-contracts",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "truffle-contract": "^3.0.0",
+    "zeppelin-solidity": "^1.2.0"
+  },
+  "devDependencies": {
+    "async": "^2.5.0",
+    "solidity-coverage": "^0.2.2"
+  }
+}
