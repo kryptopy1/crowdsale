@@ -42,32 +42,38 @@ contract('KryptopyToken: MintableToken', function(accounts) {
     assert.strictEqual(symbol, _tokenSymbol, "Symbol value is not as expected");
   });
 
-  it('Transfer: ether transfer to token address should fail', async function() {
-    try {
-        await web3.eth.sendTransaction({ from: accounts[0], to: instance.address, value: web3.toWei("10", "Ether") });
-    } catch (error) {
-        return assertJump(error);
-    }
-    assert.fail('should have thrown exception before');
+  it('Transfer: ether transfer to token address should fail.', async function() {
+      try {
+          await web3.eth.sendTransaction({ from: accounts[0], to: instance.address, value: web3.toWei("10", "Ether") });
+      } catch (error) {
+          return assert.equal(error.message.search('invalid opcode'), -1, 'Invalid opcode error must be returned');
+      }
+      assert.fail('should have thrown exception before');
   });
 
-  it('Mint: Token minting should succeed only if owner is the minting.', async function() {
-    await instance.mint(accounts[0], 100 * Math.pow(10, _tokenDecimals));
+  it('Mint: Token minting should succeed only if owner is the minting', async function() {
+    await instance.mint(accounts[0], 5000000 * Math.pow(10, _tokenDecimals));
     let receiverBalance = await instance.balanceOf(accounts[0]);
-    assert.equal(receiverBalance, 100 * Math.pow(10, _tokenDecimals), "Receiver balance should have been " + tokenInSmallestUnit(100) + ".");
+    assert.equal(receiverBalance, 10000000 * Math.pow(10, _tokenDecimals), "Receiver balance should have been " + tokenInSmallestUnit(10000000) + ".");
   });
 
-  it('Mint: Mint agent must be able to close miniting.', async function() {
+  it('Mint: Token minting should not be able to exceed TokenCap', async function() {
+    await instance.mint(accounts[0], 100000000 * Math.pow(10, _tokenDecimals));
+    let receiverBalance = await instance.balanceOf(accounts[0]);
+    assert.equal(receiverBalance, 5000000 * Math.pow(10, _tokenDecimals), "Receiver balance should have been " + tokenInSmallestUnit(5000000) + ".");
+  });
+
+  it('Mint: Mint agent must be able to close minting.', async function() {
     await instance.mint(accounts[2], 100 * Math.pow(10, _tokenDecimals), { from: accounts[0] });
 
     let receiverBalance = await instance.balanceOf(accounts[2]);
     assert.equal(receiverBalance, 100 * Math.pow(10, _tokenDecimals), "Receiver balance should have been " + tokenInSmallestUnit(100) + ".");
     await instance.finishMinting({ from: accounts[0] });
     let mintingFinished = await instance.mintingFinished.call();
-    assert.equal(mintingFinished, true, "Miniting could not be finished by the mint agent (owner).");
+    assert.equal(mintingFinished, true, "Minting could not be finished by the mint agent (owner).");
   });
 
-  it('Mint: Mint agent must close miniting & should no longer be able to mint anymore.', async function() {
+  it('Mint: Mint agent must close minting & should no longer be able to mint anymore.', async function() {
     await instance.mint(accounts[2], 100 * Math.pow(10, _tokenDecimals), { from: accounts[0] });
 
     let receiverBalance = await instance.balanceOf(accounts[2]);
