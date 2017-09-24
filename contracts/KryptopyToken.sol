@@ -47,7 +47,6 @@ contract KryptopyToken is MintableToken, PausableToken {
     totalSupply = tokenReserve;
     balances[owner] = totalSupply;
     Mint(owner, totalSupply);
-    pause();
   }
 
   /**

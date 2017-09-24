@@ -18,7 +18,6 @@ contract('KryptopyToken: MintableToken', function(accounts) {
 
   beforeEach(async() => {
     instance = await Token.new();
-    await instance.unpause();
   });
 
   it('Creation: should return the correct totalSupply after construction', async function() {
@@ -46,7 +45,7 @@ contract('KryptopyToken: MintableToken', function(accounts) {
       try {
           await web3.eth.sendTransaction({ from: accounts[0], to: instance.address, value: web3.toWei("10", "Ether") });
       } catch (error) {
-          return assert.equal(error.message.search('invalid opcode'), -1, 'Invalid opcode error must be returned');
+          return assertJump(error)
       }
       assert.fail('should have thrown exception before');
   });

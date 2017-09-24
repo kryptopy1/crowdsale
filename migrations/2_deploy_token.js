@@ -27,6 +27,8 @@ module.exports = function(deployer, network, accounts) {
 
     if (network == "development") {
         _listOfOwners = [accounts[1], accounts[2], accounts[3]];
+    } else if (network == "test") {
+        _listOfOwners = [accounts[1], accounts[2], accounts[3]];
     // } else if (network == "ropsten") {
     //     var johnRopsten = "0x00";
     //     var stephRopsten = "0x00";
