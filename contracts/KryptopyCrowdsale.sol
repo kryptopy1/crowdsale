@@ -47,19 +47,18 @@ contract KryptopyCrowdsale is CappedCrowdsale, RefundableCrowdsale {
   *  Storage
   */
   // the amount of WEI to remove at each step of the ICO from the Bonuses
-  uint256 public preIcoMin =  400000000000000000 wei;
+  uint256 public preIcoMin = 400000000000000000 wei;
   // the amount of WEI to remove at each step of the ICO from the Bonuses
-  uint256 public preIcoMax =  10000000000000000000 wei;
+  uint256 public preIcoMax = 10000000000000000000 wei;
   // we do not want the contract to start before the start date we put Stopped as initial State to prevent that.
   CrowdsaleProgress public crowdsaleProgress;
   // amount of kpy sent
-  uint256 public kpySent = 0;
+  uint256 public kpySent;
 
   /*
   * Public functions
   */
   /** Constructor to initialize all variables, including Crowdsale variables
-  *  _token Address of the deployed KryptopyToken contract
   * @param _startBlock unix timestamp for start of ICO
   * @param _endBlock unix timestamp for end of ICO
   * @param _rate of ether to KrytopyToken in wei
@@ -91,8 +90,6 @@ contract KryptopyCrowdsale is CappedCrowdsale, RefundableCrowdsale {
 
     uint256 weiAmount = msg.value;
 
-    // 2 nanokpy(x10m) / wei (normal)
-    // 265 nanokpy(x1b) / wei (incl. bonus)
     uint256 exchangeBuffer = 1000000000;
     uint256 tokensToSend = weiAmount.mul(rate).div(exchangeBuffer);
 
@@ -130,8 +127,12 @@ contract KryptopyCrowdsale is CappedCrowdsale, RefundableCrowdsale {
     PreICOStarted();
   }
 
-  function kpyGoalReached() public constant returns (bool) {
-    uint256 kpyGoal = 1000000000;
+  function kpyGoalReached()
+    internal
+    constant
+    returns (bool)
+  {
+    uint256 kpyGoal = 2500000000000000000000;
     return kpySent >= kpyGoal;
   }
 }
