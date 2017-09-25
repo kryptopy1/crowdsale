@@ -1,3 +1,14 @@
+require('babel-register');
+require('babel-polyfill');
+
+var provider;
+var HDWalletProvider = require('truffle-hdwallet-provider');
+var mnemonic = '[REDACTED]';
+
+if (!process.env.SOLIDITY_COVERAGE){
+  provider = new HDWalletProvider(mnemonic, 'https://rinkeby.infura.io/')
+}
+
 module.exports = {
   networks: {
     development: {
@@ -6,11 +17,15 @@ module.exports = {
       network_id: '*' // Match any network id
     },
     rinkeby: {
-      host: "localhost", // Connect to geth on the specified
-      port: 8545,
-      from: "0x00", // default address to use for any transaction Truffle makes during migrations
-      network_id: 4,
-      gas: 4612388 // Gas limit used for deploys
+      provider: provider,
+      network_id: '4',
+    },
+    coverage: {
+      host: "localhost",
+      network_id: "*",
+      port: 8555,
+      gas: 0xfffffffffff,
+      gasPrice: 0x01
     }
   }
 }
