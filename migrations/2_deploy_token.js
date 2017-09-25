@@ -1,4 +1,5 @@
-var Token = artifacts.require("./KryptopyToken.sol");
+var KryptopyToken = artifacts.require("./KryptopyToken.sol");
+var KryptopyCrowdsale = artifacts.require("./KryptopyCrowdsale.sol");
 var MultiSigWallet = artifacts.require("./MultiSigWallet.sol");
 
 var debug = true;
@@ -14,6 +15,18 @@ module.exports = function(deployer, network, accounts) {
      * ===================================
      *
      */
+
+     // /**
+     //  * Crowdsale parameters
+     //  * =====================================
+     //  * Here you will set your Crowdsale parameters
+     //  */
+
+    const startBlock = web3.eth.blockNumber + 2;             // blockchain block number where the crowdsale will commence. Here I just taking the current block that the contract and setting that the crowdsale starts two block after
+    const endBlock = startBlock + 2592000;                  // blockchain block number where it will end. 300 is little over an hour.
+    const rate = new web3.BigNumber(265);                    // rate of ether to KrytopyToken in wei
+    const goal = new web3.BigNumber(2500000000000000000000); // minimum amount of funds to be raised in wei
+    const cap = new web3.BigNumber(12500000000000000000000); // max amount of funds raised in wei
 
     // /**
     //  * MultiSigWallet parameters
@@ -38,9 +51,9 @@ module.exports = function(deployer, network, accounts) {
         // you have to manually specify this
         // before you deploy this in mainnet
         // or else this deployment will fail
-        var member1 = "0x00";
-        var member2 = "0x00";
-        var member3 = "0x00";
+        var member1 = "0x00"; // Nicolas
+        var member2 = "0x00"; // Cody
+        var member3 = "0x00"; // Rob
         _listOfOwners = [member1, member2, member3];
         if (member1 == "0x00" || member2 == "0x00" || member3 == "0x00") {
             throw new Error("MultiSigWallet members are not set properly. Please set them in migration/2_deploy_token.js.");
@@ -55,33 +68,23 @@ module.exports = function(deployer, network, accounts) {
      *
      */
 
-    var tokenInstance;
+    var crowdsaleInstance;
     var multisigWalletInstance;
 
     deployer.then(function() {
-
-        return Token.new();
-
+      return MultiSigWallet.new(_listOfOwners, _minRequired);
     }).then(function(Instance) {
-        //console.log(Instance);
-        tokenInstance = Instance;
-        if (debug) console.log("KryptopyToken address is: ", tokenInstance.address);
-        if (showURL) console.log("Token URL is: " + getEtherScanUrl(network, tokenInstance.address, "token"));
-        if (showURL) console.log("Transaction URL is: " + getEtherScanUrl(network, tokenInstance.transactionHash, "tx"));
-        if (showABI) console.log("KryptopyToken ABI is: ", JSON.stringify(tokenInstance.abi));
-        if (debug) console.log("===============================================");
-        if (debug) console.log("\n\n");
-        if (debug) console.log("*************  Deploying MultiSigWallet by Zeppelin  ************** \n");
-        return MultiSigWallet.new(_listOfOwners, _minRequired);
-    }).then(function(Instance) {
-        multisigWalletInstance = Instance;
-        if (debug) console.log("MultiSigWallet Parameters are:");
-        if (debug) console.log(_listOfOwners, _minRequired);
-        if (debug) console.log("MultiSigWallet address is: ", multisigWalletInstance.address);
-        if (showURL) console.log("Wallet URL is: " + getEtherScanUrl(network, multisigWalletInstance.address, "address"));
-        if (showURL) console.log("Transaction URL is: " + getEtherScanUrl(network, multisigWalletInstance.transactionHash, "tx"));
-        if (showABI) console.log("MultiSigWallet ABI is: ", JSON.stringify(multisigWalletInstance.abi));
-        if (debug) console.log("\n\n");
+      multisigWalletInstance = Instance;
+      if (debug) console.log("MultiSigWallet Parameters are:");
+      if (debug) console.log(_listOfOwners, _minRequired);
+      if (debug) console.log("MultiSigWallet address is: ", multisigWalletInstance.address);
+      if (showURL) console.log("Wallet URL is: " + getEtherScanUrl(network, multisigWalletInstance.address, "address"));
+      if (showURL) console.log("Transaction URL is: " + getEtherScanUrl(network, multisigWalletInstance.transactionHash, "tx"));
+      if (showABI) console.log("MultiSigWallet ABI is: ", JSON.stringify(multisigWalletInstance.abi));
+      if (debug) console.log("===============================================");
+      if (debug) console.log("\n\n");
+      if (debug) console.log("*************  Deploying KryptopyCrowdsale by Kryptopy  ************** \n");
+      return KryptopyCrowdsale.new(startBlock, endBlock, rate, goal, cap, multisigWalletInstance.address);
     });
 
     function getEtherScanUrl(network, data, type) {
