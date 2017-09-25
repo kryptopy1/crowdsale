@@ -31,13 +31,13 @@ contract('KryptopyToken: MintableToken', function(accounts) {
   });
 
   it('Creation: should return correct token meta information', async function() {
-    let name = await instance.name.call();
+    let name = await instance.NAME.call();
     assert.strictEqual(name, _tokenName, "Name value is not as expected.");
 
-    let decimal = await instance.decimals.call();
+    let decimal = await instance.DECIMALS.call();
     assert.strictEqual(decimal.toNumber(), _tokenDecimals, "Decimals value is not as expected");
 
-    let symbol = await instance.symbol.call();
+    let symbol = await instance.SYMBOL.call();
     assert.strictEqual(symbol, _tokenSymbol, "Symbol value is not as expected");
   });
 
