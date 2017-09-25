@@ -51,19 +51,7 @@ contract('KryptopyCrowdsale', function ([_, investor, wallet, purchaser]) {
   describe('upon construction', function () {
 
     it('should return the correct state and bonus values after construction', async function () {
-      let preICOBonus = new web3.BigNumber(200000000000000000)
-      // let icoBonus = new web3.BigNumber(125000000000000000)
-      // let bonusStepMin = new web3.BigNumber(25000000000000000)
       let progressIndex = new web3.BigNumber(CrowdsaleProgress.indexOf("PREICO"))
-
-      let initPreICOBonus = await this.crowdsale.initPreICOBonus()
-      initPreICOBonus.should.be.bignumber.equal(preICOBonus)
-
-      // let initICOBonus = await this.crowdsale.initICOBonus()
-      // initICOBonus.should.be.bignumber.equal(icoBonus)
-      //
-      // let initBonusStepMin = await this.crowdsale.bonusStepMin()
-      // initBonusStepMin.should.be.bignumber.equal(bonusStepMin)
 
       let crowdsaleProgress = await this.crowdsale.crowdsaleProgress();
       crowdsaleProgress.should.be.bignumber.equal(progressIndex)
@@ -83,34 +71,34 @@ contract('KryptopyCrowdsale', function ([_, investor, wallet, purchaser]) {
       crowdsaleProgress.should.be.bignumber.equal(progressIndex)
     })
 
-    it('should accept token purchases during pre-sale after goal has been met', async function () {
-      let progressIndex = new web3.BigNumber(CrowdsaleProgress.indexOf("GOALSUCCESS"))
+    // it('should accept token purchases during pre-sale after goal has been met', async function () {
+    //   let progressIndex = new web3.BigNumber(CrowdsaleProgress.indexOf("GOALSUCCESS"))
+    //
+    //   await increaseTimeTo(this.startTime)
+    //   await this.crowdsale.send(goal).should.be.fulfilled
+    //   await this.crowdsale.buyTokens(investor, {value: goal, from: purchaser}).should.be.fulfilled
+    //
+    //   let crowdsaleProgress = await this.crowdsale.crowdsaleProgress();
+    //   crowdsaleProgress.should.be.bignumber.equal(progressIndex)
+    //
+    //   await this.crowdsale.send(value).should.be.fulfilled
+    //   await this.crowdsale.buyTokens(investor, {value: value, from: purchaser}).should.be.fulfilled
+    //
+    // })
 
-      await increaseTimeTo(this.startTime)
-      await this.crowdsale.send(goal).should.be.fulfilled
-      await this.crowdsale.buyTokens(investor, {value: goal, from: purchaser}).should.be.fulfilled
-
-      let crowdsaleProgress = await this.crowdsale.crowdsaleProgress();
-      crowdsaleProgress.should.be.bignumber.equal(progressIndex)
-
-      await this.crowdsale.send(value).should.be.fulfilled
-      await this.crowdsale.buyTokens(investor, {value: value, from: purchaser}).should.be.fulfilled
-
-    })
-
-    it('should reject token purchases after pre-ico supply has been exhausted', async function () {
-      let progressIndex = new web3.BigNumber(CrowdsaleProgress.indexOf("GOALSUCCESS"))
-
-      await increaseTimeTo(this.startTime)
-      await this.crowdsale.send(cap).should.be.fulfilled
-      await this.crowdsale.buyTokens(investor, {value: cap, from: purchaser}).should.be.fulfilled
-
-      let crowdsaleProgress = await this.crowdsale.crowdsaleProgress();
-      crowdsaleProgress.should.be.bignumber.equal(progressIndex)
-
-      await this.crowdsale.send(value).should.be.rejectedWith(EVMThrow)
-      await this.crowdsale.buyTokens(investor, {value: value, from: purchaser}).should.be.rejectedWith(EVMThrow)
-    })
+    // it('should reject token purchases after pre-ico supply has been exhausted', async function () {
+    //   let progressIndex = new web3.BigNumber(CrowdsaleProgress.indexOf("GOALSUCCESS"))
+    //
+    //   await increaseTimeTo(this.startTime)
+    //   await this.crowdsale.send(cap).should.be.fulfilled
+    //   await this.crowdsale.buyTokens(investor, {value: cap, from: purchaser}).should.be.fulfilled
+    //
+    //   let crowdsaleProgress = await this.crowdsale.crowdsaleProgress();
+    //   crowdsaleProgress.should.be.bignumber.equal(progressIndex)
+    //
+    //   await this.crowdsale.send(value).should.be.rejectedWith(EVMThrow)
+    //   await this.crowdsale.buyTokens(investor, {value: value, from: purchaser}).should.be.rejectedWith(EVMThrow)
+    // })
 
     // it('should log purchase', async function () {
     //   const {logs} = this.crowdsale.buyTokens(investor, {value: value, from: purchaser})

@@ -20,8 +20,8 @@ contract('KryptopyCrowdsale: Crowdsale', function ([_, investor, wallet, purchas
   const cap = ether(12500);
   const goal = ether(2500);
   const lessThanGoal = ether(500);
-  const lessThanCap = ether(500);
-  const value = new BigNumber(1000)
+  const lessThanCap = ether(1);
+  const value = ether(2);
 
   const expectedTokenAmount = rate.mul(value)
 
