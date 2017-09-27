@@ -16,6 +16,7 @@
   },
   "homepage": "https://github.com/kryptopy1/crowdsale",
   "dependencies": {
+    "solc": "^0.4.17",
     "zeppelin-solidity": "^1.2.0"
   },
   "devDependencies": {
