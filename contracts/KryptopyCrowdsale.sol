@@ -146,6 +146,7 @@ contract KryptopyCrowdsale is CappedCrowdsale, RefundableCrowdsale {
       returns (bool)
     {
         uint256 kpyGoal = 2500000000000000000000;
+                         
         return kpySent >= kpyGoal;
     }
 }

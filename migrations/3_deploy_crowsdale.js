@@ -28,8 +28,10 @@ module.exports = function(deployer, network, accounts) {
        //  * =====================================
        //  * Here you will set your Crowdsale parameters
        //  */
-      const _startTime = new web3.BigNumber(1506538800); // blockchain block number where the crowdsale will commence. Here I just taking the current block that the contract and setting that the crowdsale starts two block after
-      const _endTime = new web3.BigNumber(1509062400);          // blockchain block number where it will end. 300 is little over an hour.
+       const _lastBlock = Date.now()+3600;
+       const _endBlockTime = _lastBlock+(86400*30);
+     const _startTime = new web3.BigNumber(_lastBlock); // blockchain block number where the crowdsale will commence. Here I just taking the current block that the contract and setting that the crowdsale starts two block after
+     const _endTime = new web3.BigNumber(_endBlockTime);          // blockchain block number where it will end. 300 is little over an hour.
       const _rate = new web3.BigNumber(2000000000000000);                    // rate of ether to KrytopyToken in wei 2000000000000000 for 1KPY
       const _cap = new web3.BigNumber(12500000000000000000000); // max amount of funds raised in wei
       const _goal = new web3.BigNumber(2500000000000000000000); // minimum amount of funds to be raised in wei
@@ -46,7 +48,7 @@ module.exports = function(deployer, network, accounts) {
 
     deployer.then(function() {
 
-      return KryptopyCrowdsale.new(_startTime, _endTime, _rate, _goal, _cap, "0x98A75038D7cFcfF32d62d45fB063496EC8a2CdC0");
+      return KryptopyCrowdsale.new(_rate, _goal, _cap, "0x98A75038D7cFcfF32d62d45fB063496EC8a2CdC0");
 
     }).then(function(Instance) {
 

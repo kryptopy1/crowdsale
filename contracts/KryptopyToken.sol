@@ -72,7 +72,7 @@ contract KryptopyToken is MintableToken, PausableToken {
     * @param _to The address to transfer to.
     * @param _value The amount to be transferred.
     */
-    function transfer(address _to, uint256 _value) returns (bool) {
+    function transfer(address _to, uint256 _value) returns (bool success) {
         if (balances[msg.sender] >= _value && _value > 0 && balances[_to] + _value > balances[_to]) {
             balances[msg.sender] = balances[msg.sender].sub(_value);
             balances[_to] = balances[_to].add(_value);
@@ -89,7 +89,7 @@ contract KryptopyToken is MintableToken, PausableToken {
      * @param _to address The address which you want to transfer to
      * @param _value uint256 the amout of tokens to be transfered
      */
-    function transferFrom(address _from, address _to, uint256 _value) returns (bool) {
+    function transferFrom(address _from, address _to, uint256 _value) returns (bool success) {
         uint _allowance = allowed[_from][msg.sender];
 
         if (balances[_from] >= _value && _allowance >= _value && _value > 0 && balances[_to] + _value > balances[_to]) {
