@@ -1,5 +1,7 @@
 # Kryptopy - Ethereum contracts
 
+[![Build Status](https://travis-ci.org/kryptopy1/crowdsale.svg?branch=master)](https://travis-ci.org/kryptopy1/crowdsale)
+
 This is the code for the Ethereum smart contract responsible for [Kryptopy](https://www.kryptopy.com) crowdsale.
 
 ## Explore the Contract

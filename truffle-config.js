@@ -16,6 +16,20 @@ module.exports = {
       port: 8545,
       network_id: '*' // Match any network id
     },
+    live: {
+      network_id: 1,
+      gas: 4612388,
+      gasPrice: 25000000000,
+      from: "0x00"
+    },
+    ropsten: {
+      host: 'localhost',
+      port: 8545,
+      network_id: '3', // Match any network id
+      gas: 4612388,
+      gasPrice: 25000000000,
+      from: "0x00"
+    },
     rinkeby: {
       provider: provider,
       network_id: '4',

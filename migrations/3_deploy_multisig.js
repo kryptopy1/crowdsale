@@ -1,8 +1,8 @@
 var MultiSigWallet = artifacts.require("./MultiSigWallet.sol");
 
 var debug = true;
-var showABI = false;
-var showURL = false;
+var showABI = true;
+var showURL = true;
 
 module.exports = function(deployer, network, accounts) {
 
@@ -21,7 +21,7 @@ module.exports = function(deployer, network, accounts) {
       //  * here you have to mention the list of wallet owners (none of them must be 0)
       //  * and the minimum approvals required to approve the transactions.
       //  */
-      var _minRequired = 3;
+      var _minRequired = 2;
       var _listOfOwners;
 
       if (network == "development") {
@@ -37,7 +37,7 @@ module.exports = function(deployer, network, accounts) {
           var member3 = "0x2FB24A2F8377867D0DeaC4Ee3D655771e51Fc3BA"; // Rob
           _listOfOwners = [member1, member2, member3];
           if (member1 == "0x00" || member2 == "0x00" || member3 == "0x00") {
-              throw new Error("MultiSigWallet members are not set properly. Please set them in migration/2_deploy_contracts.js.");
+              throw new Error("MultiSigWallet members are not set properly. Please set them in migration/2_deploy_multisig.js.");
           }
       }
 

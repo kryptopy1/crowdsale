@@ -1,11 +1,8 @@
-var MultiSigWallet = artifacts.require("./MultiSigWallet.sol");
 var KryptopyCrowdsale = artifacts.require("./KryptopyCrowdsale.sol");
 
 var debug = true;
-var showABI = false;
-var showURL = false;
-
-const BigNumber = web3.BigNumber;
+var showABI = true;
+var showURL = true;
 
 const duration = {
   seconds: function(val) { return val},
@@ -31,8 +28,8 @@ module.exports = function(deployer, network, accounts) {
        //  * =====================================
        //  * Here you will set your Crowdsale parameters
        //  */
-      const _startTime = new BigNumber(1506466641);        // blockchain block number where the crowdsale will commence. Here I just taking the current block that the contract and setting that the crowdsale starts two block after
-      const _endTime = _startTime + duration.days(30);          // blockchain block number where it will end. 300 is little over an hour.
+      const _startTime = new web3.BigNumber(web3.eth.getBlock('latest').timestamp); // blockchain block number where the crowdsale will commence. Here I just taking the current block that the contract and setting that the crowdsale starts two block after
+      const _endTime = _startTime.plus(2592000);          // blockchain block number where it will end. 300 is little over an hour.
       const _rate = new web3.BigNumber(265);                    // rate of ether to KrytopyToken in wei
       const _cap = new web3.BigNumber(12500000000000000000000); // max amount of funds raised in wei
       const _goal = new web3.BigNumber(2500000000000000000000); // minimum amount of funds to be raised in wei
@@ -46,7 +43,6 @@ module.exports = function(deployer, network, accounts) {
      */
 
     var crowdsaleInstance;
-    var multisigWalletInstance;
 
     deployer.then(function() {
 

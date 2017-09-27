@@ -30,34 +30,34 @@ import "zeppelin-solidity/contracts/token/PausableToken.sol";
  */
 contract KryptopyToken is MintableToken, PausableToken {
 
-    string public constant NAME = "Kryptopy Token";
-    string public constant SYMBOL = "KPY";
-    string public constant VERSION = "1.0";
-    uint8 public constant DECIMALS = 10;
+    string public constant name = "Kryptopy Token";
+    string public constant symbol = "KPY";
+    string public constant version = "1.0";
+    uint8 public constant decimals = 10;
 
     //** Maximum total number of tokens ever created */
-    uint256 public constant TOKEN_CAP = 40000000 * (10 ** uint256(DECIMALS));
+    uint256 public constant tokenCap = 40000000 * (10 ** uint256(decimals));
     //** Initial Supply */
-    uint256 public constant TOKEN_RESERVE = 5000000 * (10 ** uint256(DECIMALS));
+    uint256 public constant tokenReserve = 5000000 * (10 ** uint256(decimals));
 
     /**
      * @dev Contructor that gives msg.sender all of existing tokens.
      */
     function KryptopyToken() MintableToken() {
         owner = msg.sender;
-        totalSupply = TOKEN_RESERVE;
+        totalSupply = tokenReserve;
         balances[owner] = totalSupply;
         Mint(owner, totalSupply);
     }
 
     /**
-     * @dev override MintableToken to check TOKEN_CAP and add a Transfer event from 0x0 to owner.
+     * @dev override MintableToken to check tokenCap and add a Transfer event from 0x0 to owner.
      * @param _to The address that will receive the minted tokens.
      * @param _amount The amount of tokens to mint.
      * @return A boolean that indicates if the operation was successful.
      */
     function mint(address _to, uint256 _amount) onlyOwner canMint returns (bool success) {
-        if (totalSupply.add(_amount) > TOKEN_CAP) {
+        if (totalSupply.add(_amount) > tokenCap) {
             return false;
         }
         totalSupply = totalSupply.add(_amount);

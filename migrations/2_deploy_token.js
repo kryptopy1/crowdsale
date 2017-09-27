@@ -1,8 +1,8 @@
 var KryptopyToken = artifacts.require("./KryptopyToken.sol");
 
 var debug = true;
-var showABI = false;
-var showURL = false;
+var showABI = true;
+var showURL = true;
 
 module.exports = function(deployer, network, accounts) {
 
